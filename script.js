@@ -75,4 +75,33 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
+let arr = ['a', 'b', 'c', 'd', 'e'];
+
+
+// slice method
+// console.log(arr.slice(2));
+
+// splice method
+
+// arr.splice(1, 3);
+// arr.splice(-1);
+// console.log(arr);
+
+
+// Reverse method
+let arr2 = ['i', 'j', 'h', 'g', 'f'];
+
+// console.log(arr2.reverse());
+// console.log(arr2)
+
+// Concat
+
+const letters = arr.concat(arr2);
+// console.log(letters);
+// console.log([...arr, ...arr2]); 
+
+// Join Method
+
+console.log(letters.join('  '));
+
 
