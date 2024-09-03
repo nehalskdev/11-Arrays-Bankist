@@ -76,13 +76,17 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-const user = 'Steven Thomas Williams';
-const userName = user
-  .toLocaleLowerCase()
-  .split(' ')
-  .map(word => word[0])
-  .join('');
-console.log(userName);
+const createUserName = function (accs) {
+  accounts.forEach(function (acc) {
+    acc.userName = acc.owner
+      .toLocaleLowerCase()
+      .split(' ')
+      .map(word => word[0])
+      .join('');
+  });
+};
+createUserName(accounts);
+console.log(accounts);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -183,3 +187,29 @@ const movementUSD = movements.map(mov => mov * euroToUsd);
 //    }
 //  });
 // console.log(movementsDescription);
+
+// FILTER method
+
+const deposits = movements.filter((e) => e > 0);
+console.log(deposits);
+
+console.log(movements);
+
+const depositArr = [];
+for (const depo of movements) {
+  if (depo > 0) {
+    depositArr.push(depo)
+  };
+}
+console.log(depositArr);
+
+const withdrawals = movements.filter((mov) => mov < 0);
+console.log(withdrawals);
+
+const withdrawalArr = [];
+for (const e of movements){
+  if (e < 0) {
+    withdrawalArr.push(e);
+  }
+}
+console.log(withdrawalArr)
