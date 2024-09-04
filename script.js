@@ -61,9 +61,10 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
           <div class="movements__type movements__type--${type}">${
@@ -180,21 +181,50 @@ btnTransfer.addEventListener('click', function (e) {
   updateUI(currentAccount);
 });
 
+// Loan feature
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // add movement
+    currentAccount.movements.push(amount);
+
+    // update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
 // account close
 
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
-  if (inputCloseUsername.value === currentAccount.userName && Number(inputClosePin.value) === currentAccount.pin) {
-    const index = accounts.findIndex(acc => acc.userName === currentAccount.userName);
+  if (
+    inputCloseUsername.value === currentAccount.userName &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.userName === currentAccount.userName
+    );
     console.log(index);
-    
+
     accounts.splice(index, 1);
-    
+
     // hide UI
     containerApp.style.opacity = 0;
   }
   inputCloseUsername.value = inputClosePin.value = '';
-})
+});
+
+// sort button
+
+let sorted = false;
+
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -380,3 +410,85 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // console.log(accounts);
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
+
+// some method
+
+// console.log(movements);
+// console.log(movements.includes(-130));
+
+// const anyDeposit = movements.some(mov => mov > 0);
+// console.log(anyDeposit);
+
+// // every method
+
+// console.log(movements.every(mov => mov > 0));
+// console.log(account4.movements.every(mov => mov > 0));
+
+// // seperate callback
+
+// const deposit = mov => mov > 0;
+// console.log(movements.some(deposit))
+
+// flat method
+
+// let arr = [1, [2, 3], 4, [5, 6, 7]];
+// console.log(arr.flat());
+
+// const overAllBalance = accounts
+//   .flatMap(acc => acc.movements) // flatMap method in action
+//   .reduce((acc, curr) => acc + curr, 0);
+
+// console.log(overAllBalance);
+
+// SORTING Arrays
+
+// with strings
+// const owners = ['Jonas', 'Zack', 'Adam', 'Martha'];
+// console.log(owners.sort());
+
+// // with numbers
+
+// console.log(movements);
+// movements.sort();
+// console.log(movements);
+
+// fill method
+
+// let x = new Array(7);
+// console.log(x);
+
+// x.fill(1, 2, 4);
+// console.log(x);
+
+// // Array from
+
+// const diceRoll = Array.from({ length: 100 }, (e, i) => i + 1);
+// // console.log(diceRoll);
+
+// labelBalance.addEventListener('click', function () {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     el => Number(el.textContent.replace('€', ''))
+//   );
+//   console.log(movementsUI);
+
+//   const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+// });
+
+// const num = [1, 2, 3, 4];
+// const double = Array.from(num, e => e * 2);
+// console.log(double);
+
+// array method practice
+
+// 1. 
+const bankDepositSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((acc, curr) => acc + curr, 0);
+console.log(bankDepositSum);
+
+// 2.
+const numDeposits1000 = accounts.flatMap(acc => acc.movements).filter(mov => mov >= 1000).length;
+console.log(numDeposits1000);
+
