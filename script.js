@@ -180,6 +180,22 @@ btnTransfer.addEventListener('click', function (e) {
   updateUI(currentAccount);
 });
 
+// account close
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (inputCloseUsername.value === currentAccount.userName && Number(inputClosePin.value) === currentAccount.pin) {
+    const index = accounts.findIndex(acc => acc.userName === currentAccount.userName);
+    console.log(index);
+    
+    accounts.splice(index, 1);
+    
+    // hide UI
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
+})
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
